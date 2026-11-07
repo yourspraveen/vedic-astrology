@@ -1,0 +1,78 @@
+<main class="wrap">
+  <h1 class="page-title">{{Settings}}</h1>
+  <p class="note">{{Set up the optional AI writer and choose how the site looks. The API key and base URL live on the server and are never shown or sent to your browser.}}</p>
+
+  <section class="card">
+    <h2>{{AI writer}}</h2>
+    <div class="set-status">{STATUS}</div>
+    <form id="setf" onsubmit="return aiSave(event)">
+      <div class="model-row" style="margin:14px 0">
+        <div class="field"><label for="model">{{Report model (fast)}}</label>
+          <select id="model" name="model"><option selected>{MODEL}</option></select></div>
+        <div class="field"><label for="ask_model">{{Ask model (reasoning)}}</label>
+          <select id="ask_model" name="ask_model"><option selected>{ASK_MODEL}</option></select></div>
+        <button type="button" class="btn ghost" onclick="aiLoadModels()" {DIS}>{{Load models}}</button>
+        <button type="button" class="btn ghost" onclick="aiTest()" {DIS}>{{Test connection}}</button>
+      </div>
+      <p class="note">{{The report body fans out into many quick calls, so a fast model keeps every section complete; the Ask box uses a deeper reasoning model for a single question.}}</p>
+      <div id="testmsg"></div>
+
+      <div class="grid" style="margin-top:12px">
+        <div class="field"><label for="temperature">{{Creativity (temperature 0–1)}}</label>
+          <input id="temperature" name="temperature" type="number" min="0" max="1" step="0.1" value="{TEMP}"></div>
+        <div class="field"><label for="passages">{{Knowledge passages per section}}</label>
+          <input id="passages" name="passages" type="number" min="0" max="12" step="1" value="{PASSAGES}"></div>
+      </div>
+
+      <div class="field" style="margin-top:12px;max-width:460px">
+        <label for="weekday">{{Weekday & dates}}</label>
+        <select id="weekday" name="weekday">
+          <option value="astrological" {WD_ASTRO_SEL}>{{Astrological (sunrise to sunrise)}}</option>
+          <option value="civil" {WD_CIVIL_SEL}>{{Civil (midnight to midnight)}}</option>
+        </select>
+        <p class="note">{{The weekday the report shows. Vedic astrology counts the day from sunrise, so a pre-dawn birth shows the previous weekday.}}</p>
+      </div>
+
+      <div class="field" style="margin-top:12px;max-width:460px">
+        <label for="signs">{{Sign (rashi) names}}</label>
+        <select id="signs" name="signs">
+          <option value="regional" {SIGN_REG}>{{Regional / Vedic}}</option>
+          <option value="western" {SIGN_WEST}>{{Western (Aries–Pisces)}}</option>
+          <option value="both" {SIGN_BOTH}>{{Both — Kumbham (Aquarius)}}</option>
+        </select>
+      </div>
+
+      <div class="field" style="margin-top:12px">
+        <label for="instructions">{{AI instructions}}</label>
+        <textarea id="instructions" name="instructions">{INSTRUCTIONS}</textarea>
+        <p class="note">{{These guide every AI reading and answer. Leave blank to use the built-in instructions.}}</p>
+      </div>
+
+      <div class="inline" style="margin-top:6px">
+        <button type="submit" class="btn">{{Save settings}}</button>
+        <span id="savedmsg" class="saved"></span>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>{{Knowledge base}}</h2>
+    <p class="note">{{When the AI writer is on, it answers using only this chart plus the passages it finds here (retrieval-augmented, RAG). This is what will be consulted:}}</p>
+    <div class="kb-stats">
+      <div class="kb"><b>{KB_RULES}</b><span>{{rule records}}</span></div>
+      <div class="kb"><b>{KB_GLOSSARY}</b><span>{{glossary entries}}</span></div>
+      <div class="kb"><b>{KB_PASSAGES}</b><span>{{searchable passages}}</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>{{Appearance}}</h2>
+    <p class="note">{{Theme — remembered on this device.}}</p>
+    <div class="seg" role="radiogroup" aria-label="Theme">
+      <label><input type="radio" name="theme" value="light" onclick="setTheme('light')"><span>☀ Temple Dawn</span></label>
+      <label><input type="radio" name="theme" value="dark" onclick="setTheme('dark')"><span>☾ Twilight</span></label>
+      <label><input type="radio" name="theme" value="system" onclick="setTheme('system')"><span>{{Match device}}</span></label>
+    </div>
+  </section>
+</main>
+<script>{SCRIPT}</script>

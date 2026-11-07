@@ -1,0 +1,101 @@
+<div class="hero">
+  <svg class="constellation" viewBox="0 0 150 84" fill="none" stroke="var(--star)" stroke-width="1" aria-hidden="true">
+    <polyline points="9,64 37,48 66,55 96,24 120,36 140,13" stroke-opacity=".55"/>
+    <g fill="var(--star)"><circle cx="9" cy="64" r="1.8"/><circle cx="37" cy="48" r="2.4"/><circle cx="66" cy="55" r="1.5"/><circle cx="96" cy="24" r="2.8"/><circle cx="120" cy="36" r="1.8"/><circle cx="140" cy="13" r="2.1"/></g>
+  </svg>
+  <div class="hero-in">
+    <h1>{{Discover your Vedic birth chart}}</h1>
+    <p>{{Enter your birth details and see your chart, planets, periods and a full reading — free.}}</p>
+    <div class="zodiac">
+      <span data-i="0">♈&#xFE0E;</span><span data-i="1">♉&#xFE0E;</span><span data-i="2">♊&#xFE0E;</span><span data-i="3">♋&#xFE0E;</span><span data-i="4">♌&#xFE0E;</span><span data-i="5">♍&#xFE0E;</span><span data-i="6">♎&#xFE0E;</span><span data-i="7">♏&#xFE0E;</span><span data-i="8">♐&#xFE0E;</span><span data-i="9">♑&#xFE0E;</span><span data-i="10">♒&#xFE0E;</span><span data-i="11">♓&#xFE0E;</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+<form id="f" method="post" action="/report" onsubmit="return onGenerate()">
+
+  <section class="card">
+    <h2>{{Your birth details}}</h2>
+    <div class="grid">
+      <div class="field"><label for="name">{{Name}}</label><input id="name" name="name" value="" placeholder="{{Your name}}"></div>
+      <div class="field"><label for="gender">{{Gender}}</label><select id="gender" name="gender"><option value="m">{{Male}}</option><option value="f">{{Female}}</option></select></div>
+      <div class="field"><label for="date">{{Date of birth}}</label><input id="date" type="date" name="date" value="1990-08-15" required onchange="refreshOffset()"></div>
+      <div class="field"><label for="time">{{Time of birth}}</label><input id="time" type="time" name="time" step="1" value="06:30:00" required onchange="refreshOffset()"></div>
+    </div>
+    <div class="field" style="margin-top:12px">
+      <label for="place">{{Birth place}}</label>
+      <div class="inline">
+        <input id="place" name="place" placeholder="{{City, State, Country}}" value="Chennai, India" style="flex:1;min-width:200px">
+        <button type="button" class="btn ghost" onclick="fetchPlace()">🔍 {{Fetch}}</button>
+        <select id="matches" class="matches"></select>
+      </div>
+    </div>
+    <div class="inline" style="margin-top:12px">
+      <button type="button" class="btn ghost" onclick="exportDetails()">💾 {{Save details}}</button>
+      <label class="btn ghost" style="cursor:pointer;margin:0">📂 {{Load details}}<input type="file" accept="application/json,.json" style="display:none" onchange="importDetails(this.files[0]);this.value=''"></label>
+    </div>
+    <details class="advanced" style="border:0;padding-top:10px">
+      <summary>{{Coordinates & time zone (filled by Fetch)}}</summary>
+      <div class="grid" style="margin-top:10px">
+        <div class="field"><label for="lat">{{Latitude (N+)}}</label><input id="lat" name="lat" value="13.0827"></div>
+        <div class="field"><label for="lon">{{Longitude (E+)}}</label><input id="lon" name="lon" value="80.2707"></div>
+        <div class="field"><label for="tz">{{Time zone (hours)}} <b class="utc" id="utc">UTC+05:30</b></label><input id="tz" name="tz" value="5.5"></div>
+      </div>
+      <input type="hidden" name="tz_name" id="tz_name" value="Asia/Kolkata">
+      <p class="note">{{Zone}}: <span id="zone">Asia/Kolkata</span></p>
+    </details>
+  </section>
+
+  <section class="card">
+    <h2>{{Your reading}}</h2>
+    <div class="grid">
+      <div class="field"><label for="rlang">{{Report language}}</label>
+        <select id="rlang" name="lang"><option value="en" {L_EN_SEL}>English</option><option value="ta" {L_TA_SEL}>தமிழ்</option><option value="hi" {L_HI_SEL}>हिन्दी</option></select></div>
+      <div class="field"><label>{{Chart style}}</label>
+        <div class="seg" role="radiogroup" aria-label="Chart style">
+          <label><input type="radio" name="style" value="south" checked><span>{{South}}</span></label>
+          <label><input type="radio" name="style" value="north"><span>{{North}}</span></label>
+          <label><input type="radio" name="style" value="east"><span>{{East}}</span></label>
+        </div>
+      </div>
+    </div>
+
+    <details class="advanced">
+      <summary>{{Advanced calculation options}}</summary>
+      <div class="grid">
+        <div class="field"><label for="ayanamsa">{{Ayanamsa}}</label>
+          <select id="ayanamsa" name="ayanamsa"><option value="lahiri">Chitrapaksha (Lahiri)</option><option value="raman">Raman</option><option value="kp">Krishnamurti</option></select></div>
+        <div class="field"><label for="node">{{Rahu / Ketu}}</label>
+          <select id="node" name="node"><option value="mean">{{Mean node}}</option><option value="true">{{True node}}</option></select></div>
+      </div>
+    </details>
+
+    <p class="inline" style="margin-top:14px">
+      <label class="inline" style="gap:6px"><input type="checkbox" name="ai" style="width:auto" {AI_DIS}> {{Add an AI-written reading}}</label>
+      <small class="note">{AI_NOTE}</small>
+    </p>
+
+    <div class="inline" style="margin-top:8px">
+      <button type="submit" class="btn big">✨ {{See my chart}}</button>
+      <button type="button" class="btn ghost" onclick="openCalendar()">📅 {{Calendar for this place}}</button>
+    </div>
+  </section>
+
+</form>
+
+<section class="card" style="margin-top:16px">
+  <h2>{{Open a saved report}}</h2>
+  <p class="note">{{Open a .md report you saved earlier — it opens with no AI cost. Tick "Refresh to now" to re-anchor the timeline to today.}}</p>
+  <form id="openf" method="post" action="/report/open" onsubmit="return openSaved(event)">
+    <input type="hidden" name="file" id="openfile">
+    <div class="inline" style="gap:10px;flex-wrap:wrap;margin-top:6px">
+      <input type="file" id="openpick" accept=".md,text/markdown,text/plain" required>
+      <label class="inline" style="gap:6px"><input type="checkbox" name="refresh" value="1" style="width:auto"> {{Refresh to now}}</label>
+      <button type="submit" class="btn">📂 {{Open report}}</button>
+    </div>
+  </form>
+</section>
+
+</main>
+<script>{SCRIPT}</script>

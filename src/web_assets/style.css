@@ -1,0 +1,229 @@
+/* Vedic Astrology web — two palettes on one layout.
+   Light = "Temple Dawn" (airy parchment); Dark = "Twilight" (night sky).
+   Every colour is a token; the dark values are repeated for the system-dark default and for the
+   explicit [data-theme=dark] toggle so the switch wins both ways. */
+:root{
+  --bg:#faf6ec; --surface:#ffffff; --raised:#fffdf7; --border:#ece0c6;
+  --fg:#3a2c1b; --muted:#8a7a62;
+  --primary:#c97b2e; --primary-ink:#ffffff; --heading:#8b1e1e; --accent:#1e1a40; --link:#9a4a1e;
+  --good:#2e7d32; --bad:#b02a2a; --chip:#f3ead3;
+  --hero:linear-gradient(135deg,#fff6e6 0%,#f4e6c6 100%); --hero-ink:#4a2b14; --star:#c3922f;
+  --shadow:0 10px 30px rgba(60,40,20,.10);
+  --display:'Marcellus',Georgia,'Times New Roman',serif;
+  --body:'Noto Sans','Segoe UI','Tamil Sangam MN','Noto Sans Tamil','Nirmala UI','Kohinoor Devanagari','Noto Sans Devanagari',Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14122b; --surface:#1f1c3d; --raised:#211d40; --border:#39336a;
+  --fg:#efe9d8; --muted:#a79fd0;
+  --primary:#e6a23c; --primary-ink:#2a1c05; --heading:#f4c66a; --accent:#e8714e; --link:#f4c66a;
+  --good:#5fcf7f; --bad:#ef6b6b; --chip:#2a2550;
+  --hero:radial-gradient(1200px 340px at 72% -40%,#2a245c 0%,#14122b 62%); --hero-ink:#f6edd8; --star:#f4c66a;
+  --shadow:0 12px 34px rgba(0,0,0,.45);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#14122b; --surface:#1f1c3d; --raised:#211d40; --border:#39336a;
+  --fg:#efe9d8; --muted:#a79fd0;
+  --primary:#e6a23c; --primary-ink:#2a1c05; --heading:#f4c66a; --accent:#e8714e; --link:#f4c66a;
+  --good:#5fcf7f; --bad:#ef6b6b; --chip:#2a2550;
+  --hero:radial-gradient(1200px 340px at 72% -40%,#2a245c 0%,#14122b 62%); --hero-ink:#f6edd8; --star:#f4c66a;
+  --shadow:0 12px 34px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);line-height:1.55;font-size:15px;-webkit-text-size-adjust:100%}
+a{color:var(--link)}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance}
+
+/* ---- top bar ---- */
+.bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;
+  padding:10px max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:var(--surface);border-bottom:1px solid var(--border)}
+.brand{font-family:var(--display);font-size:1.15rem;color:var(--heading);text-decoration:none;white-space:nowrap}
+.nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav a{text-decoration:none;color:var(--fg);padding:6px 12px;border-radius:8px;font-size:.92rem}
+.nav a:hover{background:var(--chip)}
+.nav a[aria-current=page]{color:var(--primary);font-weight:600;box-shadow:inset 0 -2px 0 var(--primary)}
+.icon{background:transparent;border:1px solid var(--border);color:var(--fg);width:38px;height:38px;border-radius:9px;cursor:pointer;font-size:1.05rem;line-height:1}
+.icon:hover{border-color:var(--primary);color:var(--primary)}
+.langsel{background:var(--surface);border:1px solid var(--border);color:var(--fg);border-radius:9px;padding:7px 9px;font-size:.86rem;max-width:130px}
+.langsel:hover{border-color:var(--primary)}
+
+/* ---- layout ---- */
+.wrap{max-width:1000px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:26px}
+/* A+/A- readability zoom — scales the content (text and the SVG charts together, so boxes keep
+   their proportions); the top bar stays fixed in size. */
+main.wrap,.rbody{zoom:var(--zoom,1)}
+.kb-stats{display:flex;flex-wrap:wrap;gap:12px}
+.kb{background:var(--raised);border:1px solid var(--border);border-radius:10px;padding:12px 16px;min-width:120px;text-align:center}
+.kb b{display:block;font-size:1.5rem;color:var(--primary);font-variant-numeric:tabular-nums}
+.kb span{font-size:.8rem;color:var(--muted)}
+.page-title{color:var(--heading);font-size:1.6rem;margin:0 0 4px}
+.note{color:var(--muted);font-size:.86rem;margin:6px 0}
+.note a{color:var(--link)}
+
+/* ---- hero (home) ---- */
+.hero{background:var(--hero);color:var(--hero-ink);position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero-in{max-width:1000px;margin:0 auto;padding:30px max(16px,env(safe-area-inset-left,0px));position:relative;z-index:1}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;
+  background:radial-gradient(1.5px 1.5px at 12% 32%,var(--star) 50%,transparent 52%),
+  radial-gradient(1.3px 1.3px at 26% 70%,var(--star) 50%,transparent 52%),
+  radial-gradient(1.2px 1.2px at 44% 20%,var(--star) 50%,transparent 52%),
+  radial-gradient(1.7px 1.7px at 62% 56%,var(--star) 50%,transparent 52%),
+  radial-gradient(1.2px 1.2px at 80% 30%,var(--star) 50%,transparent 52%),
+  radial-gradient(1.5px 1.5px at 92% 66%,var(--star) 50%,transparent 52%)}
+.constellation{position:absolute;top:14px;right:18px;width:150px;height:84px;opacity:.5;z-index:0}
+.hero h1{font-size:clamp(1.8rem,5vw,2.6rem);margin:0 0 6px;color:inherit}
+.hero p{margin:0;opacity:.85;max-width:52ch}
+.zodiac{margin-top:14px;font-size:1.15rem;letter-spacing:.28em;color:var(--star);line-height:1.8}
+.zodiac span{cursor:help}
+
+/* ---- cards & forms ---- */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);margin-block:16px}
+.card h2{color:var(--heading);font-size:1.2rem;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px 16px}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label{font-size:.78rem;color:var(--muted);letter-spacing:.02em}
+input,select,textarea{font:inherit;color:var(--fg);background:var(--raised);border:1px solid var(--border);border-radius:9px;padding:9px 11px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--primary);outline-offset:1px;border-color:var(--primary)}
+textarea{resize:vertical;min-height:120px;line-height:1.5}
+.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.utc{font-weight:600;color:var(--accent)}
+
+.btn{background:var(--primary);color:var(--primary-ink);border:0;border-radius:10px;padding:11px 20px;font:inherit;font-weight:600;cursor:pointer}
+.btn:hover{filter:brightness(1.05)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--border);font-weight:500}
+.btn.ghost:hover{border-color:var(--primary);color:var(--primary);filter:none}
+.btn.big{font-size:1.05rem;padding:13px 26px}
+button:disabled,input:disabled{opacity:.5;cursor:not-allowed}
+
+/* segmented control (visual, short choices) */
+.seg{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--raised)}
+.seg label{flex:1;text-align:center;padding:8px 14px;cursor:pointer;font-size:.9rem;border-right:1px solid var(--border);white-space:nowrap}
+.seg label:last-child{border-right:0}
+.seg input{position:absolute;opacity:0;width:0;height:0}
+.seg input:checked + span,.seg label:has(input:checked){background:var(--primary);color:var(--primary-ink)}
+.seg label span{display:inline-block}
+
+details.advanced{margin-top:14px;border-top:1px dashed var(--border);padding-top:12px}
+details.advanced summary{cursor:pointer;color:var(--link);font-size:.92rem;list-style:none}
+details.advanced summary::before{content:"⚙ ";}
+details.advanced[open] summary{margin-bottom:12px}
+
+/* ---- chips & pills ---- */
+.pill{display:inline-block;font-size:.8rem;padding:3px 10px;border-radius:999px;font-weight:600}
+.pill.ok{color:var(--good)}
+.pill.off{color:var(--muted)}
+.chip{display:inline-block;font-size:.76rem;padding:3px 10px;border-radius:999px;background:var(--chip);color:var(--fg)}
+.chip.good{background:transparent;border:1px solid var(--good);color:var(--good)}
+.chip.bad{background:transparent;border:1px solid var(--bad);color:var(--bad)}
+.chip.ai{background:transparent;border:1px solid var(--primary);color:var(--primary)}
+
+/* ---- matches dropdown / fetch ---- */
+.matches{display:none}
+
+/* ---- calendar ---- */
+.cal-head{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:14px}
+.cal-nav{display:flex;gap:8px;align-items:center}
+.monthpick{background:var(--surface);border:1px solid var(--border);color:var(--fg);border-radius:9px;padding:8px 10px;font:inherit;font-size:.88rem}
+.monthpick:hover{border-color:var(--primary)}
+.cal-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+table.cal{border-collapse:collapse;width:100%;font-size:13px;background:var(--surface);min-width:760px}
+table.cal th,table.cal td{border-bottom:1px solid var(--border);padding:7px 9px;text-align:left;white-space:nowrap;font-variant-numeric:tabular-nums}
+table.cal thead th{background:var(--chip);color:var(--heading);position:sticky;top:0;font-weight:600}
+table.cal th.sticky,table.cal td.sticky{position:sticky;left:0;background:var(--surface);z-index:1}
+table.cal thead th.sticky{background:var(--chip);z-index:2}
+table.cal tbody tr.sun td{background:color-mix(in srgb,var(--bad) 8%,var(--surface))}
+table.cal tbody tr.sun td.sticky{background:color-mix(in srgb,var(--bad) 8%,var(--surface))}
+table.cal td.good{color:var(--good)}
+table.cal td.bad{color:var(--bad)}
+table.cal td.fest{color:var(--heading);font-weight:500;white-space:normal;min-width:120px;line-height:1.45}
+/* calendar location + festival-traditions controls */
+.cal-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.cal-controls .cityq{padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--fg);min-width:140px}
+.cal-controls .cityf{display:flex;gap:8px;align-items:center;margin:0}
+.cal-msg{margin:0 0 12px;font-size:.92rem;color:var(--muted);min-height:1.2em}
+.cal-msg.err{color:var(--primary)}
+.tradsel{position:relative}
+.tradsel>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center}
+.tradsel>summary::-webkit-details-marker{display:none}
+.tradmenu{position:absolute;z-index:5;margin-top:6px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;min-width:180px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.tradopt{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.tradopt input{width:auto}
+
+/* ---- report chrome ---- */
+.report-actions{max-width:960px;margin:14px auto 0;padding-inline:max(16px,env(safe-area-inset-left,0px))}
+.ask{max-width:960px;margin:22px auto;padding-inline:0}
+.ask-h{color:var(--heading)}
+.ask-row{display:flex;gap:8px;flex-wrap:wrap}
+.ask-row input{flex:1;min-width:200px}
+.answer{white-space:pre-wrap;background:var(--raised);border:1px solid var(--border);border-left:3px solid var(--primary);padding:12px 14px;border-radius:10px;margin-top:12px}
+.qahead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 8px;border-top:1px solid var(--border);padding-top:14px}
+.qahead h3{color:var(--heading);font-size:1rem;margin:0}
+.btn.ghost.sm{padding:7px 12px;font-size:.84rem}
+.qalog{display:flex;flex-direction:column;gap:12px}
+.qa-item{background:var(--raised);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:12px 14px}
+.qa-q{font-weight:600;color:var(--heading);margin:0 0 6px}
+.qa-a{white-space:pre-wrap;margin:0}
+.qa-src{color:var(--muted);font-size:.8rem;font-style:italic;margin:8px 0 0}
+.qa-t{color:var(--muted);font-size:.76rem;margin:6px 0 0}
+
+/* ---- settings ---- */
+.set-status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.model-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+.model-row .field{flex:1;min-width:180px}
+#testmsg{font-size:.86rem}
+#testmsg.ok{color:var(--good)}#testmsg.err{color:var(--bad)}
+.saved{color:var(--good);font-size:.88rem;margin-left:8px}
+
+@media (max-width:560px){
+  .hero-in{padding-block:24px}
+  .constellation{display:none}
+  .btn.big{width:100%}
+}
+/* loading overlay (slow AI enrichment) */
+.loadov{position:fixed;inset:0;background:rgba(20,15,30,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.loadcard{background:var(--surface);color:var(--fg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;max-width:360px;text-align:center;box-shadow:var(--shadow)}
+.loadcard p{margin:14px 0 0;color:var(--muted)}
+.ltimer{margin-top:10px;font-variant-numeric:tabular-nums;color:var(--primary);font-size:1.15rem;font-weight:600}
+.spin{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;margin:0 auto;animation:fjspin .8s linear infinite}
+@keyframes fjspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}.spin{animation-duration:2.4s}}
+
+/* ---- report: auspicious banner, AI mark, PDF ---- */
+.ganesha{text-align:center;margin:4px auto 10px;max-width:520px}
+.ganesha svg{width:84px;height:84px;color:var(--primary);display:inline-block}
+.invocation{font-family:'Marcellus',Georgia,serif;font-size:1.12rem;color:var(--primary);letter-spacing:.04em;margin:2px 0 0;text-align:center}
+/* Narrow data tables (e.g. Planet/Nature) should size to their content, not stretch edge to edge;
+   the report's own CSS forces width:100%. Key/value tables keep full width (long values read better). */
+.rbody table:not(.kv){width:auto;max-width:100%}
+.ailegend{text-align:center;color:var(--muted);font-size:.82rem;margin:0 0 14px;border-bottom:1px solid var(--border);padding-bottom:12px}
+.aix{color:var(--primary);font-weight:600;cursor:help;font-size:.72em;vertical-align:super;margin-left:1px}
+.pdfbtn{margin-left:auto}
+.report-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+
+/* ---- print / download as PDF: hide the web chrome, reset the on-screen zoom, let the report's own
+   print stylesheet (in report.rs) own the page layout and the maroon section design ---- */
+@media print{
+  :root{--zoom:1 !important}
+  .bar,.report-actions,.ask,#regen,.loadov,.langsel,.pdfbtn,.site-foot,.cal-controls,.cal-nav,.cal-msg{display:none !important}
+  main.wrap,.rbody{zoom:1 !important;max-width:none !important;margin:0 !important;padding:0 !important}
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sanskrit,.cite,.ganesha,figure,table,tr{break-inside:avoid}
+  .ganesha{page-break-before:avoid;break-before:avoid}
+  .ganesha svg{width:70px;height:70px}
+  a[href]{text-decoration:none}
+  @page{margin:13mm}
+}
+
+/* ---- site footer: the AGPL source-code offer, on every page ---- */
+.site-foot{margin:48px auto 28px;padding:18px 16px 0;max-width:900px;border-top:1px solid var(--border);
+  display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;
+  color:var(--muted);font-size:.82rem;line-height:1.5}
+.site-foot a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.site-foot a:hover{color:var(--fg)}
+.site-foot .foot-sub{font-size:.76rem;opacity:.85}

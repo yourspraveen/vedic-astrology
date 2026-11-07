@@ -1,0 +1,36 @@
+[package]
+name = "vedic_astrology"
+license = "AGPL-3.0-or-later"
+version = "0.1.0"
+edition = "2024"
+default-run = "vedic_astrology_web"
+
+# Shared core: calculations, report, knowledge base, AI writer, calendar, web server.
+[lib]
+name = "vedic_astrology"
+path = "src/lib.rs"
+
+# The self-hosted website (the only program). Build it with:
+#   cargo build --release --bin vedic_astrology_web
+[[bin]]
+name = "vedic_astrology_web"
+path = "src/bin/vedic_astrology_web.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+ureq = { version = "3", features = ["json"] }
+chrono = { version = "0.4", default-features = false, features = ["std"] }
+chrono-tz = "0.10"
+
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+# Smaller, faster release builds for packaging.
+lto = "thin"
+codegen-units = 4
+strip = true
+
+[build-dependencies]
+cc = "1"

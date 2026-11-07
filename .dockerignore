@@ -1,0 +1,11 @@
+target/
+dist/
+.git/
+/*.html
+!src/web_assets/*.html
+.env
+
+# Personal-study texts must never enter an image, so keep them out of the build context at all.
+**/texts/personal/
+# Local scratch that would only bloat the image.
+**/.DS_Store

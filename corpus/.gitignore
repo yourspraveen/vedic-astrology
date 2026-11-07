@@ -1,0 +1,6 @@
+# The corpus itself is deliberately NOT in git: it is large, it is somebody else's text, and the
+# public repository should hand people the importer rather than a copy. Only this file and the
+# README are tracked, so the folder exists for the Docker build even in a fresh clone.
+*
+!.gitignore
+!README.md

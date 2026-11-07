@@ -1,0 +1,27 @@
+# Secrets — never commit (holds VA_AI_API_KEY)
+.env
+.env.*
+
+# Rust / build output
+/target
+/dist
+
+# Imported classical texts. Never committed: the corpus is somebody else's text and the public
+# repository ships the importer instead of a copy. corpus/ has its own .gitignore; these cover an
+# import run straight into the repo's knowledge folder.
+/knowledge/texts/jyotisha-corpus/
+/knowledge/texts/SOURCES.md
+# Personal-study texts (indike.org BPHS): study only, never redistributed, never packaged.
+**/texts/personal/
+
+# Local artifacts
+/shots
+.playwright-mcp/
+*.log
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Brainstorming visual companion
+.superpowers/

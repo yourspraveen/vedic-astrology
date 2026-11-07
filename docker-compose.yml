@@ -1,0 +1,31 @@
+# Vedic Astrology web app (Chainguard base):  docker compose up -d --build   then open http://localhost:8080
+services:
+  vedic-astrology-web:
+    build: .
+    image: vedic-astrology-web:latest
+    ports:
+      - "8080:8080"
+    # If your AI service is on a LAN host that the container can't resolve by name, map it here so
+    # DNS resolves (and TLS still validates against the hostname). Example:
+    # extra_hosts:
+    #   - "ai.example.lan:192.168.1.10"
+    environment:
+      # Optional AI writer (any OpenAI-compatible service). Put the values in a .env file beside
+      # this one, or export them before `docker compose up`. They stay on the server.
+      VA_AI_BASE_URL: ${VA_AI_BASE_URL:-}
+      VA_AI_API_KEY: ${VA_AI_API_KEY:-}
+      # Fast model for the report body (fans out into ~20 parallel calls); reasoning model for the Ask box.
+      VA_AI_MODEL: ${VA_AI_MODEL:-}
+      VA_AI_ASK_MODEL: ${VA_AI_ASK_MODEL:-}
+      VA_AI_MAX_TOKENS: ${VA_AI_MAX_TOKENS:-}
+      VA_AI_USER: ${VA_AI_USER:-}
+    # The image has no shell; this read-only root works because the app only writes to the
+    # knowledge folder when it is first seeded (already done at build time).
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    # To use your own knowledge folder instead of the image's (texts kept for personal study,
+    # edited AI instructions), uncomment. The folder must be readable by uid 65532.
+    # volumes:
+    #   - ${HOME}/.vedic_astrology/knowledge:/opt/vedic_astrology/knowledge
+    restart: unless-stopped

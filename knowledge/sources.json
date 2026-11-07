@@ -1,0 +1,15 @@
+{
+  "schema": "vedic-astrology-sources/1",
+  "note": "Register of classical works the rules draw on. Fill in edition, translator and rights before adding any text from them to texts/.",
+  "sources": [
+    {"id": "BPHS", "title": "Brihat Parashara Hora Shastra", "priority": "P0", "used_for": ["houses", "house lords", "grahas", "aspects", "yogas", "Vimshottari dasha", "divisional charts"], "edition": null, "translator": null, "rights": "unknown", "included_text": false, "rules": ["lord_in_house", "dasha"], "caution": "Composite textual tradition; recensions differ."},
+    {"id": "PHALADEEPIKA", "title": "Phaladeepika (Mantreswara)", "priority": "P0", "used_for": ["planetary positions", "house effects", "yoga results", "dasha results"], "edition": null, "translator": null, "rights": "unknown", "included_text": false, "rules": ["dasha"]},
+    {"id": "BRIHAT_JATAKA", "title": "Brihat Jataka (Varahamihira)", "priority": "P0", "used_for": ["natal interpretation", "planetary combinations"], "edition": null, "translator": null, "rights": "unknown", "included_text": false, "rules": []},
+    {"id": "SARAVALI", "title": "Saravali (Kalyanavarma)", "priority": "P0", "used_for": ["detailed planetary effects"], "edition": null, "translator": null, "rights": "unknown", "included_text": false, "rules": []},
+    {"id": "JATAKA_PARIJATA", "title": "Jataka Parijata", "priority": "P1", "used_for": ["advanced prediction rules"], "edition": null, "translator": null, "rights": "unknown", "included_text": false, "rules": []},
+    {"id": "SARVARTHA_CHINTAMANI", "title": "Sarvartha Chintamani", "priority": "P1", "used_for": ["house-specific predictions"], "edition": null, "translator": null, "rights": "unknown", "included_text": false, "rules": []},
+    {"id": "UTTARA_KALAMRITA", "title": "Uttara Kalamrita", "priority": "P1", "used_for": ["house significations", "planetary relationships"], "edition": null, "translator": null, "rights": "unknown", "included_text": false, "rules": []},
+    {"id": "LAGHU_PARASHARI", "title": "Laghu Parashari", "priority": "P1", "used_for": ["functional benefics and malefics", "dasha and yoga interpretation"], "edition": null, "translator": null, "rights": "unknown", "included_text": false, "rules": []},
+    {"id": "FESTIVALS", "title": "Multi-tradition festival rules (authored)", "priority": "P1", "used_for": ["calendar festival overlay"], "edition": null, "translator": null, "rights": "our own work", "included_text": false, "rules": ["festivals"], "caution": "Festival names are facts; dates are computed estimates (lunar panchang for Hindu/Buddhist/Jain, Gregorian computus for Christian, tabular Islamic calendar for Muslim) authored in src/festivals.rs. No copyrighted festival database is used; observance varies by region and may differ by a day."}
+  ]
+}
